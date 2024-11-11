@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-
 export const fetchItems = createAsyncThunk('items/fetchItems', async () => {
   const response = await fetch('https://645b030265bd868e9328a7a2.mockapi.io/Cau1');
   
@@ -12,6 +11,14 @@ export const fetchItems = createAsyncThunk('items/fetchItems', async () => {
   return data;
 });
 
+// Thêm reducer để thêm item vào store
+export const addItem = (item) => {
+  return {
+    type: 'items/addItem',
+    payload: item,
+  };
+};
+
 const itemSlice = createSlice({
   name: 'items',
   initialState: {
@@ -19,7 +26,11 @@ const itemSlice = createSlice({
     status: 'idle',
     error: null,
   },
-  reducers: {},
+  reducers: {
+    addItem: (state, action) => {
+      state.items.push(action.payload); // Thêm item vào mảng items
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchItems.pending, (state) => {
