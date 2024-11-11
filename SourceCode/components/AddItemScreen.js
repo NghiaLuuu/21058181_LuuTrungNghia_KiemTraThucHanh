@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Alert, Text } from 'react-native';
-import { useDispatch } from 'react-redux'; 
-import { fetchItems } from './Redux/itemSlide'; 
+import { View, TextInput, Button, Alert, Text, StyleSheet, ScrollView } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { addItem } from './Redux/itemSlide'; 
+
 const AddItemScreen = ({ navigation }) => {
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [imageLink, setImageLink] = useState('');
@@ -25,11 +25,10 @@ const AddItemScreen = ({ navigation }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        
-        dispatch(addItem(data)); 
+        dispatch(addItem(data));
 
         Alert.alert('Thành công', 'Xe đã được thêm thành công');
-        navigation.goBack(); 
+        navigation.goBack();
       })
       .catch((error) => {
         Alert.alert('Lỗi', 'Có lỗi xảy ra khi thêm xe');
@@ -37,30 +36,68 @@ const AddItemScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={{ padding: 20 }}>
-      <Text style={{ fontSize: 18, marginBottom: 20 }}>Thêm xe mới</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.headerText}>Thêm xe mới</Text>
       <TextInput
         placeholder="Tên xe"
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }}
+        style={styles.input}
         value={name}
         onChangeText={setName}
       />
       <TextInput
         placeholder="Giá"
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }}
+        style={styles.input}
         keyboardType="numeric"
         value={price}
         onChangeText={setPrice}
       />
       <TextInput
         placeholder="Link ảnh"
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }}
+        style={styles.input}
         value={imageLink}
         onChangeText={setImageLink}
       />
-      <Button title="Thêm xe" onPress={handleAddItem} />
-    </View>
+      <Button title="Thêm xe" onPress={handleAddItem} color="#1E90FF" />
+    </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    padding: 25,
+    backgroundColor: '#F0F0F0',
+  },
+  headerText: {
+    fontSize: 26,
+    fontWeight: '700',
+    color: '#2C3E50',
+    marginBottom: 30,
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    letterSpacing: 1.5,
+  },
+  input: {
+    height: 50,
+    borderColor: '#BDC3C7',
+    borderWidth: 1,
+    borderRadius: 12,
+    marginBottom: 15,
+    paddingLeft: 15,
+    fontSize: 16,
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#BDC3C7',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 2,
+  },
+  button: {
+    borderRadius: 12,
+    paddingVertical: 12,
+    backgroundColor: '#1E90FF',
+    marginTop: 20,
+  },
+});
 
 export default AddItemScreen;
