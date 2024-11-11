@@ -1,1 +1,2 @@
-# 21058181_LuuTrungNghia_KiemTraThucHanh
+Họ và tên: Lưu Trung Nghĩa<br>
+MSSV     : 21058181
