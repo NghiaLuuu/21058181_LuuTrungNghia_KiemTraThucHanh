@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Alert, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, TextInput, Alert, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { addItem } from './Redux/itemSlide'; 
 
@@ -10,6 +10,16 @@ const AddItemScreen = ({ navigation }) => {
   const [imageLink, setImageLink] = useState('');
 
   const handleAddItem = () => {
+    if (!name || !price || !imageLink) {
+      Alert.alert('Lỗi', 'Vui lòng điền đầy đủ thông tin!');
+      return;
+    }
+
+    if (isNaN(price) || price <= 0) {
+      Alert.alert('Lỗi', 'Vui lòng nhập giá hợp lệ!');
+      return;
+    }
+
     const itemData = {
       name: name,
       price: parseFloat(price),
@@ -26,8 +36,10 @@ const AddItemScreen = ({ navigation }) => {
       .then((response) => response.json())
       .then((data) => {
         dispatch(addItem(data));
-
         Alert.alert('Thành công', 'Xe đã được thêm thành công');
+        setName('');
+        setPrice('');
+        setImageLink('');
         navigation.goBack();
       })
       .catch((error) => {
@@ -57,7 +69,9 @@ const AddItemScreen = ({ navigation }) => {
         value={imageLink}
         onChangeText={setImageLink}
       />
-      <Button title="Thêm xe" onPress={handleAddItem} color="#1E90FF" />
+      <TouchableOpacity style={styles.button} onPress={handleAddItem}>
+        <Text style={styles.buttonText}>Thêm xe</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -97,6 +111,13 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     backgroundColor: '#1E90FF',
     marginTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
 
